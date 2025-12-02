@@ -8,15 +8,17 @@
 # misuse of this material. 
 #
 #*****************************************************************************
+# Sources for main Make File
+#-----------------------------------------------------------------------------
 PLATFORM ?= HOST
 ifeq ($(PLATFORM), HOST)
-SOURCES = \
-	main.c \
-	memory.c
-INCLUDES = -Iinclude/common 
+SOURCES = main.c \
+	      memory.c
+INCLUDES = -I../include/common
 else ifeq ($(PLATFORM),MSP432)
-SOURCES = \
-	main.c \
-	memory.c
-	
+SOURCES = interrupts_msp432p401r_gcc.c \
+          startup_msp432p401r_gcc.c \
+          system_msp432p401r.c
+INCLUDES = -I../include/msp432 \
+           -I../include/CMSIS
 endif
