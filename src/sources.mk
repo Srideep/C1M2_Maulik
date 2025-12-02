@@ -10,15 +10,30 @@
 #*****************************************************************************
 # Sources for main Make File
 #-----------------------------------------------------------------------------
-PLATFORM ?= HOST
+
+# Common sources needed by BOTH platforms
+COMMON_SOURCES = main.c \
+                 memory.c
+
+# MSP432-specific sources (startup, interrupts, system config)
+MSP432_SOURCES = interrupts_msp432p401r_gcc.c \
+                 startup_msp432p401r_gcc.c \
+                 system_msp432p401r.c
+
+# Include paths
+COMMON_INCLUDES = -I../include/common
+
+MSP432_INCLUDES = -I../include/msp432 \
+                  -I../include/CMSIS
+
+#------------------------------------------------------------------------------
+# Platform-conditional assignment
+#------------------------------------------------------------------------------
 ifeq ($(PLATFORM), HOST)
-SOURCES = main.c \
-	      memory.c
-INCLUDES = -I../include/common
+	SOURCES = $(COMMON_SOURCES)
+	INCLUDES = $(COMMON_INCLUDES)
 else ifeq ($(PLATFORM),MSP432)
-SOURCES = interrupts_msp432p401r_gcc.c \
-          startup_msp432p401r_gcc.c \
-          system_msp432p401r.c
-INCLUDES = -I../include/msp432 \
-           -I../include/CMSIS
+    # MSP432 needs BOTH common sources AND platform-specific sources
+    SOURCES = $(COMMON_SOURCES) $(MSP432_SOURCES)
+    INCLUDES = $(COMMON_INCLUDES) $(MSP432_INCLUDES)
 endif
