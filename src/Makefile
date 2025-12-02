@@ -94,7 +94,7 @@ ARCH_FLAGS := \
   -mfloat-abi=hard    \
   -mfpu=fpv4-sp-d16   \
   --specs=$(SPECS)
--Wno-error=attributes
+  -Wno-error=attributes
 
 # MSP432: use linker script + map file
 LDFLAGS += $(ARCH_FLAGS) -T $(LINKER_FILE) -Wl,-Map=$(MAPFILE)
